@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS tiendas (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    direccion VARCHAR(255) NOT NULL DEFAULT '',
+    telefono VARCHAR(30) NOT NULL DEFAULT '',
+    correo VARCHAR(150) NOT NULL DEFAULT '',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS publicadores (
+    id_pub INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre_pub VARCHAR(150) NOT NULL,
+    UNIQUE KEY uq_publicadores_nombre (nombre_pub)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO publicadores (nombre_pub) VALUES ('Editorial de ejemplo');
+
+CREATE TABLE IF NOT EXISTS titulos (
+    id_titulo INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(200) NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL,
+    id_pub INT UNSIGNED NOT NULL,
+    CONSTRAINT fk_titulos_publicadores
+        FOREIGN KEY (id_pub) REFERENCES publicadores (id_pub)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
