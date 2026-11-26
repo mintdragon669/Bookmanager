@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/bootstrap.php';
+requireAuthentication();
 
 $tienda = new Tienda();
 $errores = [];

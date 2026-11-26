@@ -13,10 +13,15 @@ La tabla se define en `database/schema.sql`.
 2. Configura las variables de entorno `DB_HOST`, `DB_NAME`, `DB_USER` y
    `DB_PASSWORD` para las credenciales de tu entorno. Si no las configuras, se
    usan `127.0.0.1`, `dblibreria`, `root` y contraseña vacía.
-3. Desde la raíz del proyecto, inicia el servidor local con
-   `php -S localhost:8000` y abre `http://localhost:8000/tiendas/`.
+3. Configura `APP_USERNAME` y `APP_PASSWORD_HASH` para proteger el acceso.
+   Genera el hash con `php -r 'echo password_hash(trim(fgets(STDIN)), PASSWORD_DEFAULT), PHP_EOL;'`
+   y escribe la contraseña cuando el comando la solicite.
+4. Desde la raíz del proyecto, inicia el servidor local con
+   `php -S localhost:8000` y abre `http://localhost:8000/`.
 
-Se requiere PHP con las extensiones PDO y pdo_mysql habilitadas.
+Se requiere PHP con las extensiones PDO y pdo_mysql habilitadas. En un sitio
+público, usa HTTPS y guarda las variables en la configuración privada del hosting;
+no las subas al repositorio.
 
 Creando CRUD de gestión de biblioteca.
 
@@ -109,19 +114,18 @@ Preparar la Base de Datos Remota:
 En el panel de control de InfinityFree (Vista Panel), busca “MySQL Databases”.
 Crea una nueva base de datos. Anota el MySQL Host Name, Database Name, Username y Password.
 Abre phpMyAdmin desde el panel, selecciona tu base de datos, ve a la pestaña “Importar” y sube el archivo .sql de la librería (puedes extraer solo las tablas tiendas, titulos, publicadores y sus datos para que sea más ligero).
-Actualizar las Credenciales en tu Código:
-Abre tu archivo config/database.php.
-Cambia las variables locales por las remotas:
-$host = 'sql123.infinityfree.com'; // El host que te den
-$dbname = 'epiz_12345678_dblibreria';
-$user = 'epiz_12345678';
-$pass = 'tu_contraseña_remota';
+Configurar las Credenciales:
+Configura en el hosting las variables DB_HOST, DB_NAME, DB_USER y DB_PASSWORD
+con los valores que proporciona el panel. Configura también APP_USERNAME y
+APP_PASSWORD_HASH para el acceso al sistema. Genera el hash de la contraseña
+localmente con el comando indicado en “Puesta en marcha”; no uses la contraseña
+en texto plano ni la subas a GitHub.
 Subir los Archivos:
 En el panel de InfinityFree, abre el “Online File Manager”.
 Entra a la carpeta htdocs.
-Sube todas las carpetas y archivos de tu proyecto local (assets, config, models, views, index.php, etc.).
+Sube todas las carpetas y archivos del proyecto dentro de htdocs.
 Prueba Final:
-Visita tu URL (ej. http://milibreria.rf.gd).
+Visita tu URL usando HTTPS (ej. https://milibreria.rf.gd) e inicia sesión.
 Navega a Tiendas y Títulos. Crea un registro nuevo para verificar que la escritura en la base de datos remota funciona.
 ✅ Rúbrica de Evaluación (Total: 20 puntos)
 Criterio	Puntos	Detalle

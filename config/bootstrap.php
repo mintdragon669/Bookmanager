@@ -6,7 +6,38 @@ require_once __DIR__ . '/../models/Tienda.php';
 require_once __DIR__ . '/../models/Titulo.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    ini_set('session.use_strict_mode', '1');
+    $https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+    session_set_cookie_params([
+        'httponly' => true,
+        'secure' => $https,
+        'samesite' => 'Lax',
+        'path' => '/',
+    ]);
     session_start();
+}
+
+function appBasePath(): string
+{
+    $directory = dirname($_SERVER['SCRIPT_NAME'] ?? '/');
+    if (in_array(basename($directory), ['tiendas', 'titulos'], true)) {
+        $directory = dirname($directory);
+    }
+
+    return rtrim($directory, '/');
+}
+
+function isAuthenticated(): bool
+{
+    return ($_SESSION['authenticated'] ?? false) === true;
+}
+
+function requireAuthentication(): void
+{
+    if (!isAuthenticated()) {
+        header('Location: ' . appBasePath() . '/login.php', true, 303);
+        exit;
+    }
 }
 
 function e(string $value): string

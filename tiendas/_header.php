@@ -20,6 +20,10 @@ $basePath = $basePath ?? '..';
             type="button" aria-label="Mostrar u ocultar navegación">
         <span class="navbar-toggler-icon"></span>
     </button>
+    <form class="ms-auto me-3 mb-0" action="<?= e($basePath) ?>/logout.php" method="post">
+        <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
+        <button class="btn btn-outline-light btn-sm" type="submit">Cerrar sesión</button>
+    </form>
 </nav>
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
